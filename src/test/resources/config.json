@@ -1,0 +1,5 @@
+{
+  "baseUrl": "https://apigateway.hml.trademaster.com.br/v2/agreement",
+  "client_id": "iterasys-app",
+  "client_secret": "Q7RrBqtIK42ZLUV16HiFndvkQPk3ECBn"
+}
