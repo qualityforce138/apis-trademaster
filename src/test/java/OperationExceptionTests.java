@@ -13,6 +13,7 @@ public class OperationExceptionTests extends Base {
     String token;
     String baseUrl = configuracao.getBaseUrl();
     String ct = "application/json";
+    String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException";
 
     public OperationExceptionTests() throws FileNotFoundException {
     }
@@ -29,7 +30,6 @@ public class OperationExceptionTests extends Base {
     @Test(priority = 2, description = "Teste para confirmar os tipos disponiveis das Operações de Exceção.")
     public void test_GetOperationExceptionaALL() throws IOException {
         token = getToken();
-        String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException";
 
         given()
                 .log().all()
@@ -53,7 +53,6 @@ public class OperationExceptionTests extends Base {
     @Test(priority = 3)
     public void test_GetOperationExceptionPARTIAL_RETURN() throws IOException {
         token = getToken();
-        String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException";
         given()
                 .log().all()
                 .header("Authorization", "Bearer " + token)
@@ -80,7 +79,6 @@ public class OperationExceptionTests extends Base {
     @Test(priority = 4)
     public void test_GetOperationExceptionPRORROGATION() throws IOException {
         token = getToken();
-        String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException";
         given()
                 .log().all()
                 .header("Authorization", "Bearer " + token)
@@ -107,7 +105,6 @@ public class OperationExceptionTests extends Base {
     @Test(priority = 5)
     public void test_PostOperationExceptionTED() throws IOException {
         token = getToken();
-        String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException/ted";
         String postOperationExceptionTED = readJsonFileContent("src/test/resources/postOperationExceptionTED.json");
 
         given()
@@ -117,7 +114,7 @@ public class OperationExceptionTests extends Base {
                 .log().all()
                 .body(postOperationExceptionTED)
                 .when()
-                .post(ENDPOINT)
+                .post(ENDPOINT + "/ted")
                 .then()
                 .log().all()
                 .statusCode(400)
