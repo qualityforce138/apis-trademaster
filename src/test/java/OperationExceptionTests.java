@@ -103,4 +103,27 @@ public class OperationExceptionTests extends Base {
                 .body("data[0].returnAmount", equalTo(0))
                 .body("data[0].ticketNumber", equalTo("31786"));
     }
+
+    @Test(priority = 5)
+    public void test_PostOperationExceptionTED() throws IOException {
+        token = getToken();
+        String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException/ted";
+        String postOperationExceptionTED = readJsonFileContent("src/test/resources/postOperationExceptionTED.json");
+
+        given()
+                .given()
+                .contentType(ct)
+                .header("Authorization", "Bearer " + token)
+                .log().all()
+                .body(postOperationExceptionTED)
+                .when()
+                .post(ENDPOINT)
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body("description", is("Bad Request"))  //este numero seria a confirmação do post, mas como foi utilizado nao teria mais como utilizar ... entao, dara bad request...47306"))
+                .body("errors[0].message", is("Operation invalid for billet #31784"))
+                .body("serviceName", is("tm-int-ms-create-manual-writeoff-operation-v2"))
+                .extract();
+    }
 }
