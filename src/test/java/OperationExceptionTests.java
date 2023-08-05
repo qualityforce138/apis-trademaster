@@ -41,12 +41,12 @@ public class OperationExceptionTests extends Base {
                 .log().all()
 
                 .body("data[0].exceptionType", equalTo("PARTIAL_RETURN"))
-                .body("data[0].exceptionCode", equalTo("42774"))
-                .body("data[0].operationCode", equalTo("42770"))
-
-                .body("data[1].exceptionType", equalTo("PRORROGATION"))
-                .body("data[1].exceptionCode", equalTo("42775"))
-                .body("data[1].operationCode", equalTo("42771"))
+                .body("data[0].exceptionCode", equalTo("47314"))
+                .body("data[0].operationCode", equalTo("42771"))
+        //como não temos o PRORROGATION (EXPIROU) este bloco abaixo foi comentado
+        //     .body("data[1].exceptionType", equalTo("PRORROGATION"))
+        //     .body("data[1].exceptionCode", equalTo("42775"))
+        //     .body("data[1].operationCode", equalTo("42771"))
                 ;
     }
 
@@ -65,41 +65,48 @@ public class OperationExceptionTests extends Base {
                 .statusCode(200)
                 .log().all()
                 .body("data[0].exceptionType", equalTo("PARTIAL_RETURN"))
-                .body("data[0].exceptionCode", equalTo("42774"))
+                .body("data[0].exceptionCode", equalTo("47309"))
                 .body("data[0].operationCode", equalTo("42770"))
-                .body("data[0].amount", equalTo(3500))
-                .body("data[0].createdAt", equalTo("2023-07-19T17:30:23.266Z"))
-                .body("data[0].dueDate", equalTo("2023-08-14"))
-                .body("data[0].newDueDate", equalTo("2023-08-14"))
+                .body("data[0].amount", equalTo(318.98F))
+                //.body("data[0].createdAt", equalTo("2023-07-19T17:30:23.266Z"))
+                .body("data[0].dueDate", equalTo("2023-09-14"))
+                .body("data[0].newDueDate", equalTo("2023-09-14"))
                 .body("data[0].reason", equalTo("SALE #42770 - PARTIAL RETURN APPLYED"))
-                .body("data[0].returnAmount", equalTo(500))
-                .body("data[0].ticketNumber", equalTo("31784"));
+                .body("data[0].returnAmount", equalTo(318.98F))
+                .body("data[0].ticketNumber", equalTo("31785"));
     }
 
     @Test(priority = 4)
-    public void test_GetOperationExceptionPRORROGATION() throws IOException {
+    public void test_GetOperationExceptionWithoutPRORROGATION() throws IOException {
         token = getToken();
         given()
+                //Como não temos operações em prorrogação, comentei parte do codigo
                 .log().all()
                 .header("Authorization", "Bearer " + token)
-                .queryParams("exceptionCode", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_CODE)
-                .queryParams("operationCode", TestParametersOperationExceptions.PRORROGATION_OPERATION_CODE)
-                .queryParams("operationCode", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_TYPE)
+                //.queryParams("exceptionCode", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_CODE)
+                //.queryParams("operationCode", TestParametersOperationExceptions.PRORROGATION_OPERATION_CODE)
+                .queryParams("exceptionType", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_TYPE)
                 .when()
                 .get(ENDPOINT)
                 .then()
                 .statusCode(200)
                 .log().all()
-                .body("data[0].exceptionType", equalTo("PRORROGATION"))
-                .body("data[0].exceptionCode", equalTo("42775"))
-                .body("data[0].operationCode", equalTo("42771"))
-                .body("data[0].amount", equalTo(9000))
-                .body("data[0].createdAt", equalTo("2023-07-19T17:31:45.425Z"))
-                .body("data[0].dueDate", equalTo("2023-07-30"))
-                .body("data[0].newDueDate", equalTo("2023-10-14"))
-                .body("data[0].reason", equalTo("SALE #42771 - INSTALLMENT #undefined EXTENDED TO 2023-10-14"))
-                .body("data[0].returnAmount", equalTo(0))
-                .body("data[0].ticketNumber", equalTo("31786"));
+                .body("data", empty())
+                .body("pageNumber", equalTo(1))
+                .body("pageSize", equalTo(100))
+                .body("totalCount", equalTo(0))
+//                .body("data[0].exceptionType", equalTo("PRORROGATION"))
+//                .body("data[0].exceptionCode", equalTo("42775"))
+//                .body("data[0].operationCode", equalTo("42771"))
+//                .body("data[0].amount", equalTo(9000))
+//                .body("data[0].createdAt", equalTo("2023-07-19T17:31:45.425Z"))
+//                .body("data[0].dueDate", equalTo("2023-07-30"))
+//                .body("data[0].newDueDate", equalTo("2023-10-14"))
+//                .body("data[0].reason", equalTo("SALE #42771 - INSTALLMENT #undefined EXTENDED TO 2023-10-14"))
+//                .body("data[0].returnAmount", equalTo(0))
+//                .body("data[0].ticketNumber", equalTo("31786"))
+                ;
+
     }
 
     @Test(priority = 5)
