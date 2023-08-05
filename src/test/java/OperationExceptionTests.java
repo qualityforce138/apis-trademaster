@@ -1,3 +1,5 @@
+import helpers.TestParametersOperationExceptions;
+import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
@@ -5,44 +7,127 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 public class OperationExceptionTests extends Base {
     String token;
     String baseUrl = configuracao.getBaseUrl();
     String ct = "application/json";
+    String ENDPOINT = "https://apigateway.hml.trademaster.com.br/v2/agreement/operationException";
 
     public OperationExceptionTests() throws FileNotFoundException {
     }
 
-    public static String buscarArquivoJson(String arquivoJson) throws IOException {
+    public static String readJsonFileContent(String arquivoJson) throws IOException {
         return new String(Files.readAllBytes(Paths.get(arquivoJson)));
     }
 
-   @Test
-   public void TesteDeToken() {
+    @Test(priority = 1, description = "Teste para verificar se o token está sendo gerado corretamente.")
+    public void TesteDeToken() {
         System.out.println(getToken());
-   }
+    }
 
-    @Test
-    public void autorizationPOST() throws IOException {
+    @Test(priority = 2, description = "Teste para confirmar os tipos disponiveis das Operações de Exceção.")
+    public void test_GetOperationExceptionaALL() throws IOException {
         token = getToken();
-        String endpoint = "https://apigateway.hml.trademaster.com.br/v2/agreement/authorization";
-        String criarAutorizacao = buscarArquivoJson("src/test/resources/criarAutorizacao.json");
 
         given()
+                .log().all()
+                .header("Authorization", "Bearer " + token)
+        .when()
+                .get(ENDPOINT)
+        .then()
+                .statusCode(200)
+                .log().all()
+
+                .body("data[0].exceptionType", equalTo("PARTIAL_RETURN"))
+                .body("data[0].exceptionCode", equalTo("47314"))
+                .body("data[0].operationCode", equalTo("42771"))
+        //como não temos o PRORROGATION (EXPIROU) este bloco abaixo foi comentado
+        //     .body("data[1].exceptionType", equalTo("PRORROGATION"))
+        //     .body("data[1].exceptionCode", equalTo("42775"))
+        //     .body("data[1].operationCode", equalTo("42771"))
+                ;
+    }
+
+    @Test(priority = 3)
+    public void test_GetOperationExceptionPARTIAL_RETURN() throws IOException {
+        token = getToken();
+        given()
+                .log().all()
+                .header("Authorization", "Bearer " + token)
+                .queryParams("exceptionCode", TestParametersOperationExceptions.PARTIAL_RETURN_EXCEPTION_CODE)
+                .queryParams("operationCode", TestParametersOperationExceptions.PARTIAL_RETURN_OPERATION_CODE)
+                .queryParams("operationCode", TestParametersOperationExceptions.PARTIAL_RETURN_EXCEPTION_TYPE)
+                .when()
+                .get(ENDPOINT)
+                .then()
+                .statusCode(200)
+                .log().all()
+                .body("data[0].exceptionType", equalTo("PARTIAL_RETURN"))
+                .body("data[0].exceptionCode", equalTo("47309"))
+                .body("data[0].operationCode", equalTo("42770"))
+                .body("data[0].amount", equalTo(318.98F))
+                //.body("data[0].createdAt", equalTo("2023-07-19T17:30:23.266Z"))
+                .body("data[0].dueDate", equalTo("2023-09-14"))
+                .body("data[0].newDueDate", equalTo("2023-09-14"))
+                .body("data[0].reason", equalTo("SALE #42770 - PARTIAL RETURN APPLYED"))
+                .body("data[0].returnAmount", equalTo(318.98F))
+                .body("data[0].ticketNumber", equalTo("31785"));
+    }
+
+    @Test(priority = 4)
+    public void test_GetOperationExceptionWithoutPRORROGATION() throws IOException {
+        token = getToken();
+        given()
+                //Como não temos operações em prorrogação, comentei parte do codigo
+                .log().all()
+                .header("Authorization", "Bearer " + token)
+                //.queryParams("exceptionCode", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_CODE)
+                //.queryParams("operationCode", TestParametersOperationExceptions.PRORROGATION_OPERATION_CODE)
+                .queryParams("exceptionType", TestParametersOperationExceptions.PRORROGATION_EXCEPTION_TYPE)
+                .when()
+                .get(ENDPOINT)
+                .then()
+                .statusCode(200)
+                .log().all()
+                .body("data", empty())
+                .body("pageNumber", equalTo(1))
+                .body("pageSize", equalTo(100))
+                .body("totalCount", equalTo(0))
+//                .body("data[0].exceptionType", equalTo("PRORROGATION"))
+//                .body("data[0].exceptionCode", equalTo("42775"))
+//                .body("data[0].operationCode", equalTo("42771"))
+//                .body("data[0].amount", equalTo(9000))
+//                .body("data[0].createdAt", equalTo("2023-07-19T17:31:45.425Z"))
+//                .body("data[0].dueDate", equalTo("2023-07-30"))
+//                .body("data[0].newDueDate", equalTo("2023-10-14"))
+//                .body("data[0].reason", equalTo("SALE #42771 - INSTALLMENT #undefined EXTENDED TO 2023-10-14"))
+//                .body("data[0].returnAmount", equalTo(0))
+//                .body("data[0].ticketNumber", equalTo("31786"))
+                ;
+
+    }
+
+    @Test(priority = 5)
+    public void test_PostOperationExceptionTED() throws IOException {
+        token = getToken();
+        String postOperationExceptionTED = readJsonFileContent("src/test/resources/postOperationExceptionTED.json");
+
+        given()
+                .given()
                 .contentType(ct)
                 .header("Authorization", "Bearer " + token)
                 .log().all()
-                .body(criarAutorizacao)
+                .body(postOperationExceptionTED)
                 .when()
-                .post(endpoint)
+                .post(ENDPOINT + "/ted")
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body("description", is("Bad Request"))
-                .body("errors[0].message", is ("Customer not found"))
-                .body("serviceName", is ("tm-int-ms-create-authorize-v2"))
+                .body("description", is("Bad Request"))  //este numero seria a confirmação do post, mas como foi utilizado nao teria mais como utilizar ... entao, dara bad request...47306"))
+                .body("errors[0].message", is("Operation invalid for billet #31784"))
+                .body("serviceName", is("tm-int-ms-create-manual-writeoff-operation-v2"))
                 .extract();
     }
 }
