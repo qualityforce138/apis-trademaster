@@ -1,0 +1,26 @@
+{
+  "totalCount": 1,
+  "pageSize": 10,
+  "pageNumber": 1,
+  "data": [
+    {
+      "exceptionCode": "15712",
+      "operationCode": "3581",
+      "buyerDocument": "60311954000147",
+      "exceptionType": "FULL_RETURN",
+      "productName": "TRADE MAX",
+      "holderDocument": "58625720000122",
+      "sellerDocument": "48668819000158",
+      "dateCreated": "2022-01-21T14:45:59.668Z",
+      "operationDateCreated": "2021-12-15T16:06:26.000Z",
+      "nNfe": "721",
+      "billetNumber": "6510",
+      "dueDate": "2022-01-15",
+      "titleAmount": 50,
+      "nominalAmount": 49.65,
+      "discount": 0,
+      "newDueDate": "2022-01-16",
+      "amount": 50.27
+    }
+  ]
+}
