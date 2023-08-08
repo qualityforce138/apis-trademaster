@@ -1,5 +1,3 @@
-package POJO;
-
 public class AuthConfig {
     String client_id;
     String client_secret;
