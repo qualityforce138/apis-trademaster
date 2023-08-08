@@ -48,6 +48,7 @@ public class TestOperationExceptionExtension extends Base {
                 .body("errors[0].message", is("Billet not found"))
                 .body("serviceName", is("tm-int-ms-update-prorrogation-operation-v2"))
                 .extract();
+
     }
 
 }
