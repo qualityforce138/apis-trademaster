@@ -42,9 +42,11 @@ public class AuthorizationReverse extends Base {
                 .statusCode (400)
                 .body ("description", is ("Bad Request"))
                 //.body("errors[0].message", is ("Authorization not found"))
-                //.body ("errors.message", is ("Authorization not found"))
+                //.body ("errors[0].message", is ("Authorization not found"))
                 .body ("serviceName", is ("tm-int-ms-cancel-authorize-v2"))
-                .extract ()
+                .extract ();
         ;
+
+
     }
 }
