@@ -1,6 +1,6 @@
-import POJO.AuthConfig;
 import com.google.gson.Gson;
 import io.restassured.http.ContentType;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
@@ -14,7 +14,7 @@ public class Base {
     Gson gson = new Gson(); // leitor de Json
     // Ler o arquivo de configuração
     Reader reader = new FileReader("./src/test/resources/config.json");
-    AuthConfig configuracao = gson.fromJson(reader, AuthConfig.class);
+    protected AuthConfig configuracao = gson.fromJson(reader, AuthConfig.class);
 
     // Construtor para tratar de problemas na leitura do arquivo de configuração
     public Base() throws FileNotFoundException {
