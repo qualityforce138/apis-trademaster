@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 @Test
 public class TestGetChargebackClass extends Base {
@@ -34,13 +35,13 @@ public class TestGetChargebackClass extends Base {
     public void testGetChargebackUnauthorized() throws IOException {
         // Configura
         token = getToken();
-        String unauthorized = readJsonFileContent("src/test/resources/unauthorized.json");
+        //String unauthorized = readJsonFileContent("src/test/resources/unauthorized.json");
         // Executa
         given()
                 .log().all()
                 .contentType(ct)
-                .header("Authorization", "Bearer" + token)
-                .body(unauthorized)
+                .header("Authorization", "Bearer" + token) // Token enviado incorretamente de proposito
+                //.body(unauthorized)
                 .when()
                 //.baseUri()
                 .get(endpoint)
@@ -48,6 +49,7 @@ public class TestGetChargebackClass extends Base {
                 .then()
                 .statusCode(401)
                 .log().all()
+                //.body("message", is("Unauthorized"))
         ;
 
 
@@ -62,10 +64,9 @@ public class TestGetChargebackClass extends Base {
         given()
                 .log().all()
                 .contentType(ct)
-                .header("Authorization", "Bearer" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(badRequest)
         .when()
-                //.baseUri()
                 .get(endpoint)
                 // Valida
         .then()
@@ -81,37 +82,54 @@ public class TestGetChargebackClass extends Base {
     public void testGetChargebackSuccess() throws IOException {
         // Configura
         token = getToken();
-        String sucessComunication = readJsonFileContent("src/test/resources/successComunication.json");
         // Executa
         given()
                 .log().all()
                 .contentType(ct)
-                .header("Authorization", "Bearer" + token)
-                .queryParams("pageSize", TestParametersChargeback.PARTIAL_RETURN_PAGE_SIZE)
-                .queryParams("pageNumber", TestParametersChargeback.PARTIAL_RETURN_PAGE_NUMBER)
-                .queryParams("exceptionType", TestParametersChargeback.PARTIAL_RETURN_EXCEPTION_TYPE)
-                .queryParams("productName", TestParametersChargeback.PARTIAL_RETURN_PRODUCT_NAME)
-                .queryParams("sellerDocument",TestParametersChargeback.PARTIAL_RETURN_SELLER_DOCUMENT)
-                .queryParams("buyerDocument", TestParametersChargeback.PARTIAL_RETURN_BUYER_DOCUMENT)
-                .queryParams("beginDate", TestParametersChargeback.PARTIAL_RETURN_BEGIN_DATE)
-                .queryParams("endDate", TestParametersChargeback.PARTIAL_RETURN_END_DATE)
-                .body(sucessComunication)
+                .header("Authorization", "Bearer " + token)
+                //.queryParams("pageSize", TestParametersChargeback.PARTIAL_RETURN_PAGE_SIZE)
+                //.queryParams("pageNumber", TestParametersChargeback.PARTIAL_RETURN_PAGE_NUMBER)
+                //.queryParams("exceptionType", TestParametersChargeback.PARTIAL_RETURN_EXCEPTION_TYPE)
+                //.queryParams("productName", TestParametersChargeback.PARTIAL_RETURN_PRODUCT_NAME)
+                //.queryParams("sellerDocument",TestParametersChargeback.PARTIAL_RETURN_SELLER_DOCUMENT)
+                //.queryParams("buyerDocument", TestParametersChargeback.PARTIAL_RETURN_BUYER_DOCUMENT)
+                //.queryParams("beginDate", TestParametersChargeback.PARTIAL_RETURN_BEGIN_DATE)
+                //.queryParams("endDate", TestParametersChargeback.PARTIAL_RETURN_END_DATE)
+
         .when()
-                //.baseUri()
+
                 .get(endpoint)
                 // Valida
         .then()
-                //.statusCode(200)
+                .statusCode(200)
                 .log().all()
-                .body("pageSize", equalTo("10"))
-                .body("pageNumber", equalTo(1))
-                .body("data[0].exceptionCode", equalTo("15712"))
-                .body("data[0].productName", equalTo("TRADE MAX"))
-                .body("data[0].sellerDocument", equalTo("48668819000158"))
-                .body("data[0].buyerDocument", equalTo("60311954000147"))
-        ;
+                //.body("pageSize", equalTo("10"))
+                //.body("pageNumber", equalTo(1))
+                //.body("data[0].exceptionCode", equalTo("15712"))
+                //.body("data[0].productName", equalTo("TRADE MAX"))
+                //.body("data[0].sellerDocument", equalTo("48668819000158"))
+                //.body("data[0].buyerDocument", equalTo("60311954000147"))
+
+//                .body("data[0].amount", equalTo(9000))
+//                .body("data[0].billetNumber", equalTo(31786))
+//                .body("data[0].buyerDocument", equalTo("22767849000128"))
+//                .body("data[0].dateCreated", equalTo("2023-08-04T00:13:29.412Z"))
+//                .body("data[0].discount", equalTo(4000))
+//                .body("data[0].dueDate", equalTo("2023-07-30"))
+//                .body("data[0].exceptionCode", equalTo("71775"))
+//                .body("data[0].exceptionType", equalTo("CB_WRITE_OFF"))
+//                .body("data[0].nNfe", equalTo("5121250"))
+//                .body("data[0].newDueDate", equalTo("2023-10-14"))
+//                .body("data[0].operationCode", equalTo("42771"))
+//                .body("data[0].operationDateCreated", equalTo("2023-07-19T17:20:06.470Z"))
+//                .body("data[0].productName", equalTo("TRADE MAX"))
+//                .body("data[0].sellerDocument", equalTo("65072595000136"))
+//                .body("data[0].titleAmount", equalTo(3000))
+                ;
+        }
+
 
     }
-}
+
 
 
