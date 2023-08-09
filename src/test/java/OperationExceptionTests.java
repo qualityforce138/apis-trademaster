@@ -30,7 +30,6 @@ public class OperationExceptionTests extends Base {
     @Test(priority = 2, description = "Teste para confirmar os tipos disponiveis das Operações de Exceção.")
     public void test_GetOperationExceptionaALL() throws IOException {
         token = getToken();
-
         given()
                 .log().all()
                 .header("Authorization", "Bearer " + token)
