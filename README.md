@@ -1,2 +1,3 @@
-# apis-trademaster
-Preencher readme.MD
+# Testes automatizados na API da Trademaster
+Equipe Quality Force - Squad 138
+
