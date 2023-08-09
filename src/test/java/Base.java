@@ -7,7 +7,6 @@ import java.io.Reader;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-
 public class Base {
 
     // Atributos
@@ -21,7 +20,6 @@ public class Base {
     }
 
     // Funções de Teste
-
     public String getToken() {
 
         //Configura
@@ -50,3 +48,4 @@ public class Base {
         return token;
     }
 }
+
