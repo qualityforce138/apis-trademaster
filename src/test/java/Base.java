@@ -7,7 +7,6 @@ import java.io.Reader;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-
 public class Base {
 
     // Atributos
@@ -21,12 +20,11 @@ public class Base {
     }
 
     // Funções de Teste
-
     public String getToken() {
 
         //Configura
-        String endpoint = "/auth/realms/api-management/protocol/openid-connect/token";
-        String baseURL = "https://apigateway.hml.trademaster.com.br";
+        String ENDPOINT = "/auth/realms/api-management/protocol/openid-connect/token";
+        String BASE_URL = "https://apigateway.hml.trademaster.com.br";
 
         //Executa
         String token = given()
@@ -36,9 +34,9 @@ public class Base {
                 .formParam("grant_type","client_credentials" )
                 .formParam("scope","convenio-api/.default" )
 
-                .baseUri(baseURL)
+                .baseUri(BASE_URL)
                 .when()
-                .post(endpoint)
+                .post(ENDPOINT)
 
                 //Valida
                 .then()
