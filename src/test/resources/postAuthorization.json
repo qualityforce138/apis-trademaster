@@ -1,0 +1,10 @@
+{
+  "buyerDocument": "57585651000108",
+  "authorizations": [
+    {
+      "sellerDocument": "81386198000195",
+      "amount": 300.12,
+      "isSplit": true
+    }
+  ]
+}
