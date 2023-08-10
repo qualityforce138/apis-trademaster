@@ -1,0 +1,10 @@
+{
+  "description": "Bad Request",
+  "errors": [
+    {
+      "message": "Mensagem de erro"
+    }
+  ],
+  "serviceName": "Nome do Serviço"
+}
+
