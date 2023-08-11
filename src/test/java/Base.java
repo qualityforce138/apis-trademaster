@@ -35,11 +35,11 @@ public class Base {
                 .formParam("scope","convenio-api/.default" )
 
                 .baseUri(BASE_URL)
-                .when()
+        .when()
                 .post(ENDPOINT)
 
                 //Valida
-                .then()
+        .then()
                 .statusCode(200)
                 .body("token_type", equalTo("Bearer"))
                 .extract()
