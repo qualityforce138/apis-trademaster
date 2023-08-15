@@ -34,22 +34,20 @@ public class TestGetChargebackClass extends Base {
     public void testGetChargebackUnauthorized() throws IOException {
         // Configura
         token = getToken();
-        //String unauthorized = readJsonFileContent("src/test/resources/unauthorized.json");
+
         // Executa
         given()
                 .log().all()
                 .contentType(ct)
-                // Token enviado incorretamente de proposito para verificar comportamento do acesso da API
-                .header("Authorization", "Bearer " + token + "erro")
-                //.body(unauthorized)
-                .when()
-                //.baseUri()
+                // Token enviado incorretamente propositalmente para verificar comportamento do acesso a API
+                .header("Authorization", "Bearer " + token + "comandoInvalido")
+        .when()
                 .get(endpoint)
                 // Valida
-                .then()
+        .then()
                 .statusCode(401)
                 .log().all()
-                //.body("message", is("Unauthorized"))
+                .body("message", equalTo("Unauthorized"))
         ;
 
 
@@ -72,7 +70,8 @@ public class TestGetChargebackClass extends Base {
         .then()
                 .statusCode(200)
                 .log().all()
-                .extract()
+                //.body("description", equalTo("Bad Reques"))
+                //.body("erros[0].message", equalTo("Mensagem de err"))
         ;
 
 
@@ -102,7 +101,7 @@ public class TestGetChargebackClass extends Base {
                 .log().all()
                 .extract()
 
-                ;
+        ;
         }
 
 
