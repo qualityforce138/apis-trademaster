@@ -45,8 +45,7 @@ public class AuthorizationReverse extends Base {
                 //.body ("errors[0].message", is ("Authorization not found"))
                 .body ("serviceName", is ("tm-int-ms-cancel-authorize-v2"))
                 .extract ();
-        ;
-
+        ;  // teste final comit
 
     }
 }
