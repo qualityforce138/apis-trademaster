@@ -45,7 +45,8 @@ public class AuthorizationReverse extends Base {
                 //.body ("errors[0].message", is ("Authorization not found"))
                 .body ("serviceName", is ("tm-int-ms-cancel-authorize-v2"))
                 .extract ();
-        ;  // teste final comit
+        ;  // CONFERIDO TODOS OS TESTE AVULSOS teste final E comitado
+        // TODO DAR CONTINUIDADE NOS TESTE SIDE TradeMASTER E TAREFAS DA EQUIPE E PROFESSOR PARA NOVA SPRINT para 28/08/23
 
     }
 }
