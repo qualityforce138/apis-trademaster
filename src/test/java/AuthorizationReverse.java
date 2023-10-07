@@ -1,3 +1,5 @@
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,5 +50,33 @@ public class AuthorizationReverse extends Base {
         ;  // CONFERIDO TODOS OS TESTE AVULSOS teste final E comitado
         // TODO DAR CONTINUIDADE NOS TESTE SIDE TradeMASTER E TAREFAS DA EQUIPE E PROFESSOR PARA NOVA SPRINT para 28/08/23
 
+
+    }
+    @Test(priority = 3, description = "Teste para verificar o retorno é o 400 com as informações passadas.")
+    public void test_loginPostAuthorization_ShouldReturn400() throws IOException {
+        token = getToken ();
+
+        String endpoint = "https://apigateway.hml.trademaster.com.br/v2/agreement/authorization/reverse";
+        String criarAutorizacao = readJsonFileContent ("src/test/resources/criarAuthorizationReverseLimity.json");
+
+        byte[] acessarLoginAutorizacao;
+        final ExtractableResponse<Response> extract = given ()
+                .contentType (ct)
+                .header ("Login", "Bearer " + token)
+                .log ().all ()
+//                .body (acessarLoginAutorizacao)
+                .when ()
+                .post (endpoint)
+                .then ()
+                .log ().all ()
+                .statusCode (400)
+                .body ("description", is ("Bad Request"))
+                //.body("errors[0].message", is ("Authorization not found"))
+                //.body ("errors[0].message", is ("Authorization not found"))
+                .body ("serviceName", is ("tm-int-ms-cancel-authorize-v2"))
+                .extract ();
+//       ATUALIZAÇÃO TESTE ACESSO A FERRAMENTA
+        // TODO: 07/10/2023 finalizar recomendação Facilitador Luciano e Everton seguindo chek list na (BRANCH EVERTON)
+        ;
     }
 }
