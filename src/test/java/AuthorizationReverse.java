@@ -42,5 +42,6 @@ public class AuthorizationReverse extends Base {
                 .body("errors[0].message", is ("Invalid field format: Body - Invalid type. Expected: array, given: object"))
                 .body ("serviceName", is ("tm-int-ms-cancel-authorize-v2"))
                 .extract ();
+
     }
 }
